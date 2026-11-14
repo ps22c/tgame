@@ -187,27 +187,13 @@ export default class Enemy extends GameObject {
     }
 
     boot() {
-        this.target = this.getAttribute("lookat");
     }
 
     update(delta) {
-        if (!this.target) return;
-
-        const direction = new Vec2(
-            this.target.pos.x - this.pos.x,
-            this.target.pos.y - this.pos.y
-        );
-
-        if (direction.length() > 1) {
-            direction.normalize();
-
-            this.pos.x += direction.x * this.speed * delta;
-            this.pos.y += direction.y * this.speed * delta;
-        }
-
-        this.rotation = Math2D.radToDeg(
-            Math.atan2(direction.y, direction.x)
-        );
+        this.target = this.getAttribute("lookat");
+        const angle = Math.atan2(this.target.pos.x - this.pos.x, this.target.pos.y - this.pos.y);
+        this.pos.x += Math.sin(angle) * this.speed * delta;
+        this.pos.y += Math.cos(angle) * this.speed * delta;
     }
 }
 ```
